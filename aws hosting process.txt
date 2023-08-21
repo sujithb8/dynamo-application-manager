@@ -1,0 +1,55 @@
+create an instance with amazon linux
+connect it
+install node and npm latest version command below
+sudo yum install -y nodejs
+install git
+sudo yum install git
+add .env file in the defined directory
+sudo touch .env
+run npm i in both frontend and backend
+run frontend npm run build to get static files
+To give acces to install npm i use below
+sudo chmod -R 777 directoryname/
+
+install nginx
+sudo yum install nginx
+start nginx 
+sudo systemctl restart nginx
+check status
+sudo systemctl status nginx
+edit nginx config file using below command
+sudo vim /etc/nginx/nginx.conf
+type i to insert data into that file
+press esc and type :wq or :wq! to save the config file
+add below snippet to server elemt in the config flie
+
+location /api {
+        proxy_pass http://localhost:9000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+location /{
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+restart nginx server
+sudo systemctl restart nginx
+
+install pm2 globally on base terminal
+npm i pm2 -g
+
+start pm2 with frontend and backend with commands below
+run below commands at respective folders or else they will not work
+(frontend)
+pm2 start npm --name "frontend" -- start 
+(backend)
+pm2 start npm --name "serverapi" -- run server
